@@ -1,0 +1,39 @@
+#services:
+#    postgres:
+#        container_name: ${POSTGRES_CONTAINER_NAME}
+#        image: ${POSTGRES_IMAGE}
+#        environment:
+#            POSTGRES_DB: ${POSTGRES_DB}
+#            POSTGRES_USER: ${POSTGRES_USER}
+#            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#        restart: unless-stopped
+#        ports:
+#            - "${POSTGRES_PORT}:5432"
+#        volumes:
+#            - plantnest:/data/postgres-plantnest
+#volumes:
+#    plantnest:
+#        external: true
+
+services:
+    mongo:
+        image: ${MONGODB_IMAGE}
+        container_name: ${MONGODB_CONTAINER_NAME}
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+        restart: unless-stopped
+        ports:
+            - ${MONGODB_PORT}:27017
+    mongo-express:
+        image: ${MONGO_EXPRESS_IMAGE}
+        container_name: ${MONGO_EXPRESS_CONTAINER_NAME}
+        environment:
+            ME_CONFIG_MONGODB_URL: ${ME_CONFIG_MONGODB_URL}
+            ME_CONFIG_BASICAUTH_USERNAME: ${ME_CONFIG_BASICAUTH_USERNAME}
+            ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
+        depends_on:
+            - mongo
+        restart: unless-stopped
+        ports:
+            - "${MONGO_EXPRESS_PORT}:8081"
